@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reloj Rosa Interactivo</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pink: {
+              50: '#fdf2f8',
+              100: '#fce7f3',
+              200: '#fbcfe8',
+              300: '#f472b6',
+              400: '#e879f9',
+              500: '#ec4899',
+              600: '#db2777',
+              700: '#be185d',
+              800: '#9d174d',
+              900: '#831843',
+            },
+            roseGold: '#e0a96d',
+            roseGoldLight: '#f5d6b4',
+            roseGoldDark: '#b87d4b',
+          },
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos personalizados para el deslizador de rango */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: transparent;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    /* Webkit (Chrome, Safari, Edge) */
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 10px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #fbcfe8 0%, #ec4899 100%);
+      border-radius: 9999px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #db2777;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7px;
+      box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3), 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: #fdf2f8;
+    }
+
+    /* Firefox */
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 10px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #fbcfe8 0%, #ec4899 100%);
+      border-radius: 9999px;
+    }
+
+    input[type=range]::-moz-range-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #db2777;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
+      transition: transform 0.15s ease;
+    }
+
+    /* Glows suaves para estética elegante */
+    .pink-glow {
+      box-shadow: 0 20px 50px -10px rgba(236, 72, 153, 0.25);
+    }
+    
+    .clock-shadow {
+      box-shadow: 
+        0 25px 50px -12px rgba(157, 23, 77, 0.25),
+        inset 0 2px 4px rgba(255, 255, 255, 0.9),
+        inset 0 -8px 16px rgba(190, 24, 93, 0.15);
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-pink-100 via-pink-50 to-pink-200 min-h-screen flex flex-col items-center justify-center p-4 selection:bg-pink-300 selection:text-pink-900 font-sans">
+
+  <!-- Tarjeta Principal -->
+  <main class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-pink-200/60 pink-glow flex flex-col items-center transition-all">
+    
+    <!-- Encabezado -->
+    <header class="text-center mb-6">
+      <h1 class="text-3xl sm:text-4xl font-serif font-semibold text-pink-900 tracking-wide mb-1">
+        Reloj Rosa
+      </h1>
+      <p class="text-xs sm:text-sm text-pink-600 font-medium tracking-wider uppercase">
+        Simulación de Tiempo
+      </p>
+    </header>
+
+    <!-- Contenedor del Reloj -->
+    <div class="relative w-64 h-64 sm:w-72 sm:h-72 my-2 flex items-center justify-center">
+      
+      <!-- Borde y Fondo del Reloj -->
+      <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-pink-300 via-pink-100 to-white p-3 clock-shadow">
+        <div class="w-full h-full rounded-full bg-gradient-to-b from-pink-50/90 to-pink-100/60 border border-pink-200/50 relative overflow-hidden flex items-center justify-center">
+          
+          <!-- Fondo sutil decorativo -->
+          <div class="absolute w-40 h-40 rounded-full bg-pink-200/20 blur-xl"></div>
+
+          <!-- Números e Indicadores del Reloj -->
+          <!-- Marcadores de Hora Principales (12, 3, 6, 9) -->
+          <span class="absolute top-3 font-serif font-semibold text-pink-800 text-lg">12</span>
+          <span class="absolute right-4 font-serif font-semibold text-pink-800 text-lg">3</span>
+          <span class="absolute bottom-3 font-serif font-semibold text-pink-800 text-lg">6</span>
+          <span class="absolute left-4 font-serif font-semibold text-pink-800 text-lg">9</span>
+
+          <!-- Trazos de minutos y horas generados por JS -->
+          <div id="clock-ticks" class="absolute inset-0 pointer-events-none"></div>
+
+          <!-- Manecilla de las Horas (vr1) -->
+          <div id="hour-hand" class="absolute w-full h-full flex justify-center items-center pointer-events-none z-10">
+            <div class="w-2 sm:w-2.5 h-16 sm:h-20 bg-gradient-to-t from-pink-800 via-pink-700 to-pink-600 rounded-full absolute -translate-y-1/2 origin-bottom shadow-md">
+              <div class="w-full h-3 bg-pink-300 rounded-t-full opacity-60"></div>
+            </div>
+          </div>
+
+          <!-- Manecilla de los Minutos (vr2) -->
+          <div id="minute-hand" class="absolute w-full h-full flex justify-center items-center pointer-events-none z-20">
+            <div class="w-1.5 h-22 sm:h-26 bg-gradient-to-t from-pink-600 via-pink-500 to-pink-400 rounded-full absolute -translate-y-1/2 origin-bottom shadow-md">
+              <div class="w-full h-4 bg-pink-200 rounded-t-full opacity-70"></div>
+            </div>
+          </div>
+
+          <!-- Manecilla de los Segundos (vr3) -->
+          <div id="second-hand" class="absolute w-full h-full flex justify-center items-center pointer-events-none z-30">
+            <div class="w-0.5 h-26 sm:h-30 bg-rose-500 rounded-full absolute -translate-y-1/2 origin-bottom shadow-sm">
+              <!-- Círculo decorativo en la manecilla de segundos -->
+              <div class="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-4 left-1/2 -translate-x-1/2 shadow-inner"></div>
+            </div>
+          </div>
+
+          <!-- Centro del Reloj (Pivote Dorados/Rosa) -->
+          <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-pink-600 to-pink-400 z-40 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Pantalla Digital Pequeña -->
+    <div class="mt-4 mb-6 bg-pink-50/80 px-4 py-1.5 rounded-full border border-pink-200 text-pink-700 font-mono text-xs sm:text-sm font-semibold shadow-inner flex items-center gap-2">
+      <i class="fa-regular fa-clock text-pink-400"></i>
+      <span id="digital-clock">00:00:00</span>
+    </div>
+
+    <!-- Panel del Deslizador de Velocidad Único -->
+    <section class="w-full bg-pink-50/60 rounded-2xl p-4 border border-pink-100 flex flex-col gap-3">
+      <div class="flex justify-between items-center">
+        <label for="speed-slider" class="text-sm font-semibold text-pink-900 flex items-center gap-2">
+          <i class="fa-solid fa-gauge-high text-pink-500"></i>
+          Velocidad Global
+        </label>
+        <span id="speed-multiplier" class="bg-pink-200 text-pink-800 text-xs font-bold px-2.5 py-1 rounded-full border border-pink-300">
+          1x (Real)
+        </span>
+      </div>
+
+      <!-- Control Deslizador (Slider) -->
+      <div class="relative flex items-center">
+        <input 
+          type="range" 
+          id="speed-slider" 
+          min="1" 
+          max="100" 
+          value="1" 
+          step="1"
+          class="w-full cursor-pointer"
+        >
+      </div>
+
+      <!-- Leyendas de velocidad -->
+      <div class="flex justify-between text-[10px] sm:text-xs text-pink-400 font-medium px-1">
+        <span>1x (Real)</span>
+        <span>25x</span>
+        <span>50x</span>
+        <span>75x</span>
+        <span>100x (Ultra)</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lógica en JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elementos del DOM
+      const hourHand = document.getElementById('hour-hand');
+      const minuteHand = document.getElementById('minute-hand');
+      const secondHand = document.getElementById('second-hand');
+      const clockTicksContainer = document.getElementById('clock-ticks');
+      const speedSlider = document.getElementById('speed-slider');
+      const speedMultiplierText = document.getElementById('speed-multiplier');
+      const digitalClockText = document.getElementById('digital-clock');
+
+      // Generar marcas de minutos/horas alrededor del reloj
+      for (let i = 0; i < 60; i++) {
+        if (i % 5 !== 0) { // Omitir donde van las horas principales
+          const tick = document.createElement('div');
+          const isQuarter = i % 15 === 0;
+          const isHour = i % 5 === 0;
+          
+          tick.className = `absolute top-0 left-1/2 -translate-x-1/2 w-full h-full flex justify-center items-start pt-2 pointer-events-none`;
+          
+          const tickMark = document.createElement('div');
+          tickMark.className = isHour 
+            ? 'w-1 h-3 bg-pink-400/60 rounded-full' 
+            : 'w-0.5 h-1.5 bg-pink-300/50 rounded-full';
+            
+          tick.appendChild(tickMark);
+          tick.style.transform = `rotate(${i * 6}deg)`;
+          clockTicksContainer.appendChild(tick);
+        }
+      }
+
+      // Estado inicial del reloj (utiliza la hora actual del sistema)
+      const now = new Date();
+      let simulatedTimeMs = now.valueOf();
+      let lastTimestamp = performance.now();
+
+      // Función principal de animación
+      function updateClock(currentTimestamp) {
+        // Calcular tiempo transcurrido (delta time en milisegundos)
+        const deltaTime = currentTimestamp - lastTimestamp;
+        lastTimestamp = currentTimestamp;
+
+        // Multiplicador de velocidad tomado del deslizador (1x a 100x)
+        const speedMultiplier = parseFloat(speedSlider.value);
+
+        // Avanzar el tiempo simulado según el multiplicador de velocidad
+        simulatedTimeMs += deltaTime * speedMultiplier;
+
+        const time = new Date(simulatedTimeMs);
+        
+        const hours = time.getHours();
+        const minutes = time.getMinutes();
+        const seconds = time.getSeconds();
+        const milliseconds = time.getMilliseconds();
+
+        // Cálculo continuo de ángulos para rotación fluida y proporcional
+        // vr3: velocidad segundos = 360deg / 60s
+        const secondDeg = ((seconds + milliseconds / 1000) / 60) * 360;
+        
+        // vr2: velocidad minutos = 360deg / 3600s (proporcional exacta a los segundos)
+        const minuteDeg = ((minutes + seconds / 60) / 60) * 360;
+        
+        // vr1: velocidad horas = 360deg / 43200s (proporcional exacta a los minutos)
+        const hourDeg = (((hours % 12) + minutes / 60) / 12) * 360;
+
+        // Aplicar rotaciones
+        secondHand.style.transform = `rotate(${secondDeg}deg)`;
+        minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+        hourHand.style.transform = `rotate(${hourDeg}deg)`;
+
+        // Actualizar reloj digital secundario
+        const hStr = String(hours).padStart(2, '0');
+        const mStr = String(minutes).padStart(2, '0');
+        const sStr = String(seconds).padStart(2, '0');
+        digitalClockText.textContent = `${hStr}:${mStr}:${sStr}`;
+
+        // Continuar el bucle de animación
+        requestAnimationFrame(updateClock);
+      }
+
+      // Evento para actualizar el indicador visual de la velocidad
+      speedSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val == 1) {
+          speedMultiplierText.textContent = '1x (Real)';
+        } else {
+          speedMultiplierText.textContent = `${val}x rápido`;
+        }
+      });
+
+      // Iniciar animación
+      requestAnimationFrame(updateClock);
+    });
+  </script>
+</body>
+</html>
